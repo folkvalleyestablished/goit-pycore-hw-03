@@ -8,9 +8,9 @@ def get_upcoming_birthdays(users):
     for user in users:
         birthday = datetime.strptime(user["birthday"], "%d.%m.%Y").date()
         birthday = birthday.replace(year=today.year)
-        
-        print("todays date: " + str(today))
-        print("birthdays date: " + str(birthday))
+
+        print("today:", today)
+        print("birthday:", birthday)
 
         if birthday < today:
             birthday = birthday.replace(year=today.year + 1)
