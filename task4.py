@@ -6,33 +6,40 @@ def get_upcoming_birthdays(users):
     result = []
 
     for user in users:
-        birthday = datetime.strptime(user["birthday"], "%d.%m.%Y").date()
-        birthday = birthday.replace(year=today.year)
+        birthday = datetime.strptime(
+            user["birthday"],
+            "%Y.%m.%d"
+        ).date()
 
-        print("today:", today)
-        print("birthday:", birthday)
+        birthday_this_year = birthday.replace(year=today.year)
 
-        if birthday < today:
-            birthday = birthday.replace(year=today.year + 1)
+        if birthday_this_year < today:
+            birthday_this_year = birthday_this_year.replace(
+                year=today.year + 1
+            )
 
-        if 0 <= (birthday - today).days <= 7:
+        days_until_birthday = (birthday_this_year - today).days
 
-            if birthday.weekday() == 5:
-                birthday += timedelta(days=2)
-            elif birthday.weekday() == 6:
-                birthday += timedelta(days=1)
+        if 0 <= days_until_birthday <= 7:
+
+            congratulation_date = birthday_this_year
+
+            if congratulation_date.weekday() == 5:
+                congratulation_date += timedelta(days=2)
+            elif congratulation_date.weekday() == 6:
+                congratulation_date += timedelta(days=1)
 
             result.append({
                 "name": user["name"],
-                "congratulation_date": birthday.strftime("%d.%m.%Y")
+                "congratulation_date": congratulation_date.strftime("%Y.%m.%d")
             })
 
     return result
 
 
 users = [
-    {"name": "John Doe", "birthday": "16.07.2000"},
-    {"name": "Jane Smith", "birthday": "19.04.1999"},
+    {"name": "John Doe", "birthday": "2000.07.23"},
+    {"name": "Jane Smith", "birthday": "1999.04.19"},
 ]
 
 print(get_upcoming_birthdays(users))
